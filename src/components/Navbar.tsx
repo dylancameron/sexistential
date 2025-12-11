@@ -1,0 +1,60 @@
+import React from "react";
+import { useColorContext } from "@/hooks/useColorContext";
+
+interface NavbarProps {
+	brandText?: string;
+	brandHref?: string;
+	actionText?: string;
+	actionHref?: string; // used if not a button
+	asButton?: boolean; // render action as a button
+	onActionClick?: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({
+	brandText = "sexistential.xyz",
+	brandHref = "/",
+	actionText = "sign up",
+	actionHref = "",
+	asButton = true,
+	onActionClick,
+}) => {
+	const { textColor } = useColorContext();
+
+	return (
+		<header className="absolute top-0 p-6 sm:pr-9 md:pr-12 w-full flex justify-between items-center z-50">
+			{/* Brand */}
+			<a
+				href={brandHref}
+				className="sm:text-4xl md:text-5xl text-2xl"
+				style={{ color: textColor }}
+			>
+				{brandText}
+				<span className="sr-only">{brandText}</span>
+			</a>
+
+			{/* Action */}
+			{asButton ? (
+				<button
+					type="button"
+					onClick={onActionClick}
+					className="sm:text-4xl md:text-5xl text-2xl"
+					style={{ color: textColor }}
+				>
+					{actionText}
+					<span className="sr-only">{actionText}</span>
+				</button>
+			) : (
+				<a
+					href={actionHref}
+					className="sm:text-4xl md:text-5xl text-2xl"
+					style={{ color: textColor }}
+				>
+					{actionText}
+					<span className="sr-only">{actionText}</span>
+				</a>
+			)}
+		</header>
+	);
+};
+
+export default Navbar;

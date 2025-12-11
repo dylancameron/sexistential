@@ -1,27 +1,31 @@
+import { useColorContext } from "@/hooks/useColorContext";
+import { useDeviceDetection } from "@/hooks/useDeviceDetection";
 import React from "react";
 
-interface VenButtonsProps {
+interface VennButtonsProps {
 	count: 2 | 3;
 	isActive?: boolean;
 	onClick?: () => void;
 	color?: string; // dynamic border color
 }
 
-export const VenButtons: React.FC<VenButtonsProps> = ({
+const VennDiagramButtons: React.FC<VennButtonsProps> = ({
 	count,
 	isActive,
 	onClick,
 	color = "black",
 }) => {
+	const isMobile = useDeviceDetection();
 	const borderWidth = isActive ? 4 : 2;
-	const size = 64;
-	const overlap = 20;
+	const finalBorder = isMobile ? borderWidth / 2 : borderWidth;
+	const size = isMobile ? 32 : 64;
+	const overlap = isMobile ? 10 : 20;
 
 	return (
 		<button
 			type="button"
 			onClick={onClick}
-			className="relative flex items-center justify-center p-4"
+			className="relative flex items-center justify-center md:p-4 p-2"
 		>
 			{count === 2 && (
 				<>
@@ -30,7 +34,7 @@ export const VenButtons: React.FC<VenButtonsProps> = ({
 						style={{
 							width: size,
 							height: size,
-							border: `${borderWidth}px solid ${color}`,
+							border: `${finalBorder}px solid ${color}`,
 							left: -overlap / 1.25,
 						}}
 					/>
@@ -39,7 +43,7 @@ export const VenButtons: React.FC<VenButtonsProps> = ({
 						style={{
 							width: size,
 							height: size,
-							border: `${borderWidth}px solid ${color}`,
+							border: `${finalBorder}px solid ${color}`,
 							left: overlap / 1.25,
 						}}
 					/>
@@ -52,7 +56,7 @@ export const VenButtons: React.FC<VenButtonsProps> = ({
 						style={{
 							width: size,
 							height: size,
-							border: `${borderWidth}px solid ${color}`,
+							border: `${finalBorder}px solid ${color}`,
 							top: -overlap,
 							left: 0,
 						}}
@@ -62,7 +66,7 @@ export const VenButtons: React.FC<VenButtonsProps> = ({
 						style={{
 							width: size,
 							height: size,
-							border: `${borderWidth}px solid ${color}`,
+							border: `${finalBorder}px solid ${color}`,
 							top: overlap / 2,
 							left: -overlap,
 						}}
@@ -72,7 +76,7 @@ export const VenButtons: React.FC<VenButtonsProps> = ({
 						style={{
 							width: size,
 							height: size,
-							border: `${borderWidth}px solid ${color}`,
+							border: `${finalBorder}px solid ${color}`,
 							top: overlap / 2,
 							left: overlap,
 						}}
@@ -84,33 +88,33 @@ export const VenButtons: React.FC<VenButtonsProps> = ({
 	);
 };
 interface WrapperProps {
-	borderColor?: string;
-	activeVenn: 2 | 3 | null;
-	setActiveVenn: (count: 2 | 3 | null) => void;
+	activeVenn: 2 | 3;
+	setActiveVenn: (count: 2 | 3) => void;
 }
 
-const VenDiagramButtonWrapper: React.FC<WrapperProps> = ({
-	borderColor = "black",
+const VennDiagramButtonWrapper: React.FC<WrapperProps> = ({
 	activeVenn,
 	setActiveVenn,
 }) => {
+	const { textColor } = useColorContext();
+
 	return (
-		<div className="absolute left-0 bottom-0 flex flex-col items-center gap-24 p-12">
-			<VenButtons
+		<div className="absolute left-0 bottom-8 sm:bottom-0 flex flex-col items-center gap-12 md:gap-24 py-6 px-8 md:p-12">
+			<VennDiagramButtons
 				count={3}
 				isActive={activeVenn === 3}
-				color={borderColor}
-				onClick={() => setActiveVenn(activeVenn === 3 ? null : 3)}
+				color={textColor}
+				onClick={() => setActiveVenn(activeVenn === 3 ? 2 : 3)}
 			/>
 
-			<VenButtons
+			<VennDiagramButtons
 				count={2}
 				isActive={activeVenn === 2}
-				color={borderColor}
-				onClick={() => setActiveVenn(activeVenn === 2 ? null : 2)}
+				color={textColor}
+				onClick={() => setActiveVenn(activeVenn === 2 ? 3 : 2)}
 			/>
 		</div>
 	);
 };
 
-export default VenDiagramButtonWrapper;
+export default VennDiagramButtonWrapper;

@@ -1,5 +1,5 @@
 {
-	"name": "sexistential",
+	"name": "sexistential.xyz",
 	"private": true,
 	"version": "1.0.0",
 	"author": {
@@ -14,6 +14,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@radix-ui/react-dialog": "^1.1.15",
 		"@radix-ui/react-slot": "^1.2.4",
 		"@react-three/drei": "^10.7.7",
 		"@react-three/fiber": "^9.4.2",
@@ -29,7 +30,9 @@
 		"react-dom": "^19.2.0",
 		"tailwind-merge": "^3.4.0",
 		"tailwindcss": "^4.1.17",
-		"three": "^0.181.2"
+		"three": "^0.181.2",
+		"vaul": "^1.1.2",
+		"wouter": "^3.8.1"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.1",

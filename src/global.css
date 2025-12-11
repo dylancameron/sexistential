@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./fonts.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -8,6 +9,8 @@
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-lg: var(--radius);
 	--radius-xl: calc(var(--radius) + 4px);
+	--color-yellow: var(--yellow-ochre);
+	--color-magenta: var(--magenta-mast);
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
 	--color-card: var(--card);
@@ -41,22 +44,6 @@
 	--color-sidebar-ring: var(--sidebar-ring);
 }
 
-html,
-body,
-#root {
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	overflow: hidden;
-}
-
 :root {
 	--radius: 0.625rem;
 	--background: oklch(1 0 0);
@@ -65,6 +52,8 @@ body,
 	--card-foreground: oklch(0.145 0 0);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.145 0 0);
+	--yellow-ochre: #fff59b;
+	--magenta-mast: #a40051;
 	--primary: oklch(0.205 0 0);
 	--primary-foreground: oklch(0.985 0 0);
 	--secondary: oklch(0.97 0 0);
@@ -99,6 +88,8 @@ body,
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.205 0 0);
 	--popover-foreground: oklch(0.985 0 0);
+	--yellow-ochre: #fff59b;
+	--magenta-mast: #a40051;
 	--primary: oklch(0.922 0 0);
 	--primary-foreground: oklch(0.205 0 0);
 	--secondary: oklch(0.269 0 0);
@@ -132,24 +123,16 @@ body,
 	box-sizing: border-box;
 }
 
-::selection {
-	background: #2ddab8;
-}
-
-h2,
-h3 {
-	letter-spacing: -1.5px;
-}
-
 body {
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
-	font-family: Helvetica Neue, sans serif;
-	font-size: 0.9rem;
-	cursor: url("https://raw.githubusercontent.com/chenglou/react-motion/master/demos/demo8-draggable-list/cursor.png")
-			39 39,
-		auto;
+	font-family: "Control Upright";
+}
+
+button,
+a {
+	cursor: pointer;
 }
 
 @layer base {
