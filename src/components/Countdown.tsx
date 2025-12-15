@@ -53,7 +53,7 @@ export default function CountdownComponent({
 		prevTime.current = timeLeft;
 	}, [timeLeft]);
 
-	const textShadowEffect = "5px 5px 5px rgba(0, 0, 0, 0.25);";
+	const textShadowEffect = "5px 5px 5px rgba(0, 0, 0, 0.25)";
 
 	return (
 		<div

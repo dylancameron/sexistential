@@ -12,9 +12,10 @@ const Background: React.FC<BackgroundProps> = ({ className, children }) => {
 		<div
 			className={className}
 			style={{
-				backgroundSize: isMobile ? "contain" : "cover",
+				backgroundSize: isMobile ? "fill" : "cover",
 				backgroundPosition: "center",
 				maxHeight: "100dvh",
+				minHeight: "100vh",
 				minWidth: "100dvw",
 				backgroundImage: "url(/images/robyn-sparkler.jpg)",
 			}}

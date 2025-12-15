@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
 	AdditiveBlending,
@@ -28,6 +28,8 @@ interface SparklerProps {
 	origin?: [number, number, number];
 	trailLength?: number;
 	slowMo?: number;
+	scale?: number;
+	autoScale?: boolean;
 }
 
 const SparklerSystem: React.FC<SparklerProps> = ({
@@ -36,11 +38,52 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 	origin = [1, -1, 0],
 	trailLength = 50,
 	slowMo = 0.75,
+	scale = 1,
+	autoScale = true,
 }) => {
 	const particlesRef = useRef<ParticleData[]>([]);
 	const pointsRef = useRef<Points>(null);
 	const nextId = useRef(0);
 	const spawnTimer = useRef(0);
+	const [deviceScale, setDeviceScale] = useState(1);
+
+	// Detect device and set scale
+	useEffect(() => {
+		if (!autoScale) return;
+
+		const updateScale = () => {
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+			const isMobile = width < 768;
+			const isTablet = width >= 768 && width < 1024;
+
+			// Calculate scale based on screen size
+			let calculatedScale = 1;
+
+			if (isMobile) {
+				// Mobile: scale based on screen width
+				calculatedScale = Math.min(width / 375, 1); // 375px is base mobile width
+				calculatedScale *= 0.6; // Make it smaller on mobile
+			} else if (isTablet) {
+				calculatedScale = 0.8;
+			}
+
+			// Also consider aspect ratio
+			const aspectRatio = width / height;
+			if (aspectRatio < 0.75) {
+				// Very tall/narrow screens (portrait phones)
+				calculatedScale *= 0.8;
+			}
+
+			setDeviceScale(calculatedScale);
+		};
+
+		updateScale();
+		window.addEventListener("resize", updateScale);
+		return () => window.removeEventListener("resize", updateScale);
+	}, [autoScale]);
+
+	const effectiveScale = autoScale ? deviceScale * scale : scale;
 
 	const colors = useMemo(
 		() => [
@@ -54,7 +97,7 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 
 	const geometry = useMemo(() => {
 		const geo = new BufferGeometry();
-		const totalPoints = particleCount * trailLength; // trail points
+		const totalPoints = particleCount * trailLength;
 		geo.setAttribute(
 			"position",
 			new BufferAttribute(new Float32Array(totalPoints * 3), 3)
@@ -87,7 +130,7 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 					vAlpha = alpha;
 					vColor = color;
 					vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-					gl_PointSize = size * (250.0 / -mvPosition.z);
+					gl_PointSize = size * (200.0 / -mvPosition.z);
 					gl_Position = projectionMatrix * mvPosition;
 				}
 			`,
@@ -98,10 +141,8 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 					vec2 center = gl_PointCoord - vec2(0.5);
 					float dist = length(center);
 
-					// Sharper cutoff
-					if (dist > 0.35) discard; // smaller radius -> sharper edges
+					if (dist > 0.35) discard;
 
-					// Edge Softness
 					float alpha = vAlpha * (1.0 - smoothstep(0.0, 0.35, dist));
 					
 					float brightness = 1.0 - smoothstep(0.0, 0.15, dist);
@@ -131,12 +172,13 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 			spawnTimer.current = 0;
 			for (let i = 0; i < spawnCount; i++) {
 				if (particlesRef.current.length < particleCount) {
-					const theta = Math.random() * Math.PI * 2; // around Y
-					const phi = Math.random() * Math.PI * 0.8 + Math.PI * 0.3; // cone shape
-					const speed = Math.random() * 2 + 0.5;
+					const theta = Math.random() * Math.PI * 2;
+					const phi = Math.random() * Math.PI * 0.8 + Math.PI * 0.3;
+					const speed = (Math.random() * 2 + 0.5) * effectiveScale;
 					const velocity = new Vector3(
 						Math.sin(phi) * Math.cos(theta) * speed,
-						Math.cos(phi) * speed + Math.random() * 0.5,
+						Math.cos(phi) * speed +
+							Math.random() * 0.5 * effectiveScale,
 						Math.sin(phi) * Math.sin(theta) * speed
 					);
 					const colorIndex = Math.floor(
@@ -148,7 +190,7 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 						velocity,
 						life: 0,
 						maxLife: Math.random() * 0.4 + 0.3,
-						size: Math.random() * 3 + 4,
+						size: (Math.random() * 3 + 4) * effectiveScale,
 						color: colors[colorIndex].clone(),
 						isStar: Math.random() > 0.5,
 						trail: Array(trailLength).fill(new Vector3(...origin)),
