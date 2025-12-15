@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { ColorContext } from "@/hooks/useColorContext";
+import { ColorContext } from "@/lib/ColorContext";
 
 export const ColorContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	const [bgColor, setBgColor] = useState("white");
+	const [overrideTextColor, setOverrideTextColor] = useState<
+		string | undefined
+	>();
 
-	const textColor = bgColor === "black" ? "#fff" : "#000";
+	const textColor =
+		overrideTextColor ?? (bgColor === "black" ? "#fff" : "#000");
 
 	const setColor = (color: string) => {
 		setBgColor(color);
@@ -17,7 +21,15 @@ export const ColorContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	}, [bgColor]);
 
 	return (
-		<ColorContext.Provider value={{ bgColor, textColor, setColor }}>
+		<ColorContext.Provider
+			value={{
+				bgColor,
+				textColor,
+				setColor,
+				overrideTextColor,
+				setOverrideTextColor,
+			}}
+		>
 			{children}
 		</ColorContext.Provider>
 	);

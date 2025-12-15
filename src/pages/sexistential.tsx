@@ -1,29 +1,33 @@
-import { useRef } from "react";
-import Sparkler, { type SparklerHandle } from "@/components/scene/Sparkler";
 import { Canvas } from "@react-three/fiber";
-import { SceneComposer } from "@/components/scene/effects/SceneComposer";
+
+import CountdownComponent from "@/components/Countdown";
+import Background from "@/components/Background";
+import { SparklerSystem } from "@/components/scene/SparklerSystem";
+import { useColorContext } from "@/hooks/useColorContext";
+import { useEffect } from "react";
 
 function Sexistential() {
-	const sparkRef = useRef<SparklerHandle | null>(null);
+	const { setOverrideTextColor } = useColorContext();
+
+	useEffect(() => {
+		setOverrideTextColor("#fff");
+		return () => setOverrideTextColor(undefined);
+	}, [setOverrideTextColor]);
 
 	return (
 		<>
-			<div className="h-dvh">
-				<Canvas className="bg-transparent">
-					<pointLight position={[0, 0, 1]} intensity={1} />
-					<Sparkler
-						ref={sparkRef}
-						position={[0, 0, 0]}
-						count={500}
-						color="#ffd66b"
-						autoStart={true}
-						spread={0.94}
-						size={12}
-						gravity={9.81 / 1.25}
-					/>
-					<SceneComposer />
+			<Background className="h-dvh">
+				<Canvas
+					className="bg-transparent absolute inset-0 z-10"
+					camera={{ position: [0, 0, 6], fov: 50 }}
+				>
+					<ambientLight intensity={0.1} />
+					<SparklerSystem particleCount={500} emissionRate={10} />
 				</Canvas>
-			</div>
+				<CountdownComponent
+					targetDate={new Date("2026-01-07T00:00:00")}
+				/>
+			</Background>
 		</>
 	);
 }

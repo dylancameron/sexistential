@@ -17,7 +17,6 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { useColorContext } from "@/hooks/useColorContext";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon, XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -36,8 +35,10 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 	title = "sign up",
 	description = "join robyn's mailing list",
 }) => {
-	const { textColor, bgColor } = useColorContext();
 	const isMobile = useDeviceDetection();
+
+	const finalTextColor = "#000";
+	const bgColor = "#fff";
 
 	if (!isMobile) {
 		return (
@@ -47,8 +48,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 					className={`sm:max-w-[425px] md:max-w-2xl`}
 					style={{
 						background: bgColor,
-						color: textColor,
-						border: `2px solid ${textColor}`,
+						color: finalTextColor,
+						border: `2px solid ${finalTextColor}`,
 					}}
 				>
 					<DialogHeader className="text-left">
@@ -58,7 +59,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 						<DialogDescription
 							className="tracking-wider text-xl sm:text-2xl"
 							style={{
-								color: textColor,
+								color: finalTextColor,
 							}}
 						>
 							{description}
@@ -76,15 +77,15 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 			<DrawerContent
 				style={{
 					background: bgColor,
-					color: textColor,
-					border: `2px solid ${textColor}`,
+					color: finalTextColor,
+					border: `2px solid ${finalTextColor}`,
 				}}
 				className="px-0 py-0"
 			>
 				<DrawerHeader
 					className="text-left"
 					style={{
-						color: textColor,
+						color: finalTextColor,
 					}}
 				>
 					<DrawerClose asChild className="absolute top-4 right-4">
@@ -92,7 +93,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 					</DrawerClose>
 					<DrawerTitle
 						style={{
-							color: textColor,
+							color: finalTextColor,
 						}}
 						className="text-2xl tracking-wide"
 					>
@@ -100,7 +101,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 					</DrawerTitle>
 					<DrawerDescription
 						style={{
-							color: textColor,
+							color: finalTextColor,
 						}}
 						className="text-xl opacity-50 tracking-wide"
 					>
@@ -119,7 +120,9 @@ const formKey = "";
 const formEndPoint = "";
 
 function SignUpForm() {
-	const { bgColor, textColor } = useColorContext();
+	const finalTextColor = "#000";
+	const bgColor = "#fff";
+
 	const [name, setName] = useState<string>("");
 	const [email, setEmail] = useState<string>("");
 	const [consent, setConsent] = useState<boolean>(false);
@@ -268,9 +271,9 @@ function SignUpForm() {
 					onChange={(e) => setName(e.target.value)}
 					required
 					style={{
-						color: textColor,
+						color: finalTextColor,
 					}}
-					className={`mb-2 sm:mb-0 text-2xl w-full sm:text-4xl md:text-5xl placeholder-[${textColor}] border-none outline-none`}
+					className={`mb-2 sm:mb-0 text-2xl w-full sm:text-4xl md:text-5xl placeholder-[${finalTextColor}] border-none outline-none`}
 				/>
 				<input
 					type="email"
@@ -279,9 +282,9 @@ function SignUpForm() {
 					onChange={(e) => setEmail(e.target.value)}
 					required
 					style={{
-						color: textColor,
+						color: finalTextColor,
 					}}
-					className={`mb-2 text-2xl w-full sm:text-4xl md:text-5xl placeholder-[${textColor}] border-none outline-none`}
+					className={`mb-2 text-2xl w-full sm:text-4xl md:text-5xl placeholder-[${finalTextColor}] border-none outline-none`}
 				/>
 
 				<ConsentBlock />
@@ -289,7 +292,7 @@ function SignUpForm() {
 					type="submit"
 					aria-label="Submit"
 					style={{
-						border: `2px solid ${textColor}`,
+						border: `2px solid ${finalTextColor}`,
 					}}
 					className={`flex rounded-sm items-center justify-center w-full py-2 outline-none sm:text-4xl md:text-5xl text-2xl`}
 					disabled={loading}
@@ -304,7 +307,7 @@ function SignUpForm() {
 							variant="destructive"
 							style={{
 								background: bgColor,
-								color: textColor,
+								color: finalTextColor,
 							}}
 						>
 							<AlertCircleIcon />
@@ -316,7 +319,7 @@ function SignUpForm() {
 								<ul
 									className="list-inside tracking-wider list-disc text-xs"
 									style={{
-										color: textColor,
+										color: finalTextColor,
 									}}
 								>
 									{nameError && <li>{nameError}</li>}
@@ -331,7 +334,7 @@ function SignUpForm() {
 			<div className="flex items-center justify-between gap-2 px-4 sm:px-0 my-3 sm:my-0">
 				<a
 					title=""
-					className={`hover:underline ${textColor} text-xs`}
+					className={`hover:underline ${finalTextColor} text-xs`}
 					href="https://beggars.com/privacypolicy/"
 					target="_blank"
 					rel="noopener noreferrer"
@@ -339,7 +342,7 @@ function SignUpForm() {
 					Privacy Policy
 				</a>
 				<a
-					className={`hover:underline ${textColor} text-xs`}
+					className={`hover:underline ${finalTextColor} text-xs`}
 					href="https://beggars.com/cookiepolicy/"
 					target="_blank"
 					rel="noopener noreferrer"
@@ -358,10 +361,11 @@ const sanitizeLabelUrl = labelUrl
 	.replace(/[^a-zA-Z0-9.-]/g, ""); // allows only domain-safe characters
 
 const ConsentBlock = () => {
-	const { textColor } = useColorContext();
 	const artistName = "robyn";
 	const labelEmail = `${artistName}@${sanitizeLabelUrl}`;
 	const [readMore, setReadMore] = useState<boolean>(false);
+
+	const finalTextColor = "#000";
 
 	const handleReadMore = () => {
 		setReadMore(!readMore);
@@ -369,7 +373,7 @@ const ConsentBlock = () => {
 
 	const readmoreButtonStyle = cn(
 		"text-[10px] underline sm:text-xs cursor-pointer outline-none",
-		readMore ? `${textColor} opacity-50` : `${textColor}`
+		readMore ? `${finalTextColor} opacity-50` : `${finalTextColor}`
 	);
 
 	return (
@@ -377,7 +381,7 @@ const ConsentBlock = () => {
 			<div className="flex flex-col gap-2 items-start pb-2 gap-x-1">
 				<span
 					className={`text-xs text-justify tracking-wider ${
-						readMore ? `${textColor}` : `${textColor}`
+						readMore ? `${finalTextColor}` : `${finalTextColor}`
 					}`}
 				>
 					<strong>Marketing permissions</strong>: By agreeing, I give
@@ -395,7 +399,7 @@ const ConsentBlock = () => {
 								link at the bottom of every email we send or
 								contact us at{" "}
 								<a
-									className={`${textColor}`}
+									className={`${finalTextColor}`}
 									href={`mailto:${labelEmail}`}
 								>
 									{labelEmail}

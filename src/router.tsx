@@ -10,11 +10,8 @@ function SPARouter() {
 			<Router>
 				<Layout>
 					<Switch>
-						<Route path={"/"} component={Dopamine} />
-						<Route
-							path={"/sexistential"}
-							component={Sexistential}
-						/>
+						<Route path={"/"} component={Sexistential} />
+						<Route path={"/sexistential"} component={Dopamine} />
 					</Switch>
 				</Layout>
 			</Router>

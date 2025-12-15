@@ -1,12 +1,5 @@
-import { createContext, useContext } from "react";
-
-interface ColorContextType {
-	bgColor: string;
-	textColor: string;
-	setColor: (color: string) => void;
-}
-
-export const ColorContext = createContext<ColorContextType | null>(null);
+import { useContext } from "react";
+import { ColorContext } from "@/lib/ColorContext";
 
 export const useColorContext = () => {
 	const ctx = useContext(ColorContext);

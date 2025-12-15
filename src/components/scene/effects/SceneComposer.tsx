@@ -12,16 +12,16 @@ export function SceneComposer() {
 			<EffectComposer>
 				<DepthOfField
 					focusDistance={0}
-					focalLength={0.02}
-					bokehScale={2}
-					height={480}
-				/>
-				<Bloom
-					luminanceThreshold={0.4}
-					luminanceSmoothing={0.9}
+					focalLength={0.1}
+					bokehScale={1}
 					height={600}
 				/>
-				<Noise opacity={0.1} />
+				<Bloom
+					luminanceThreshold={0.1}
+					luminanceSmoothing={0.3}
+					height={600}
+				/>
+				<Noise opacity={0.5} />
 				<Vignette eskil={false} offset={0.1} darkness={1.1} />
 			</EffectComposer>
 		</>

@@ -13,6 +13,7 @@ import {
 	BufferGeometry,
 	DynamicDrawUsage,
 	Vector3,
+	PointLight,
 } from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { fragmentShader, vertexShader } from "@/shaders/sparkler";
@@ -52,6 +53,7 @@ export const Sparkler = forwardRef<SparklerHandle, SparklerProps>(
 		ref
 	) => {
 		const { camera } = useThree();
+		const lightRef = useRef<PointLight | null>(null);
 
 		const positionsArray = useMemo(
 			() => new Float32Array(count * 3),
@@ -156,6 +158,9 @@ export const Sparkler = forwardRef<SparklerHandle, SparklerProps>(
 		};
 
 		useFrame((_, delta) => {
+			const slowMo = 0.25; // 25% speed
+			const dt = delta * slowMo;
+
 			if (!geometryRef.current) return;
 
 			if (materialRef.current) {
@@ -164,9 +169,9 @@ export const Sparkler = forwardRef<SparklerHandle, SparklerProps>(
 			}
 
 			if (burning.current) {
-				elapsedSinceIgnite.current += delta;
+				elapsedSinceIgnite.current += dt;
 				const spawnRate = Math.max(80, count * 1.0);
-				const toSpawn = Math.floor(spawnRate * delta);
+				const toSpawn = Math.floor(spawnRate * dt);
 
 				for (let s = 0; s < toSpawn; s++) {
 					for (let i = 0; i < count; i++) {
@@ -176,24 +181,29 @@ export const Sparkler = forwardRef<SparklerHandle, SparklerProps>(
 						}
 					}
 				}
+			}
 
-				// if (elapsedSinceIgnite.current >= duration)
-				// 	burning.current = false;
+			if (lightRef.current) {
+				// Smoothly follow the target position
+				lightRef.current.position.lerp(targetPos.current, 0.3);
+
+				// Optional flicker effect for realism
+				lightRef.current.intensity = 4 + Math.random() * 2;
 			}
 
 			let anyAlive = false;
 			for (let i = 0; i < count; i++) {
-				ages.current[i] += delta;
+				ages.current[i] += dt;
 				if (ages.current[i] <= lives.current[i]) {
 					anyAlive = true;
 					const pi = i * 3;
 
-					velocities.current[pi + 1] -= gravity * delta * 0.5;
-					positions.current[pi] += velocities.current[pi] * delta;
+					velocities.current[pi + 1] -= gravity * dt * 0.5;
+					positions.current[pi] += velocities.current[pi] * dt;
 					positions.current[pi + 1] +=
-						velocities.current[pi + 1] * delta;
+						velocities.current[pi + 1] * dt;
 					positions.current[pi + 2] +=
-						velocities.current[pi + 2] * delta;
+						velocities.current[pi + 2] * dt;
 
 					velocities.current[pi] *= 0.99;
 					velocities.current[pi + 1] *= 0.99;
@@ -278,58 +288,67 @@ export const Sparkler = forwardRef<SparklerHandle, SparklerProps>(
 		}, [autoStart]);
 
 		return (
-			<points ref={pointsRef} frustumCulled={false}>
-				<bufferGeometry ref={geometryRef}>
-					<bufferAttribute
-						attach="attributes-position"
-						args={[positionsArray, 3]}
-						usage={DynamicDrawUsage}
-					/>
-					<bufferAttribute
-						attach="attributes-velocity"
-						args={[velocitiesArray, 3]}
-						usage={DynamicDrawUsage}
-					/>
-					<bufferAttribute
-						attach="attributes-age"
-						args={[agesArray, 1]}
-						usage={DynamicDrawUsage}
-					/>
-					<bufferAttribute
-						attach="attributes-life"
-						args={[livesArray, 1]}
-						usage={DynamicDrawUsage}
-					/>
-					<bufferAttribute
-						attach="attributes-psize"
-						args={[sizesArray, 1]}
-						usage={DynamicDrawUsage}
-					/>
-					<bufferAttribute
-						attach="attributes-pcolor"
-						args={[colorsArray, 3]}
-						usage={DynamicDrawUsage}
-					/>
-				</bufferGeometry>
-				<shaderMaterial
-					ref={materialRef}
-					vertexShader={vertexShader}
-					fragmentShader={fragmentShader}
-					transparent
-					depthWrite={false}
-					blending={AdditiveBlending}
-					vertexColors
-					uniforms={{
-						sizeAttenuation: { value: 0.85 },
-						pixelRatio: {
-							value:
-								typeof window !== "undefined"
-									? window.devicePixelRatio
-									: 1,
-						},
-					}}
+			<>
+				<pointLight
+					ref={lightRef}
+					color={color}
+					intensity={5}
+					distance={3}
+					decay={1}
 				/>
-			</points>
+				<points ref={pointsRef} frustumCulled={false}>
+					<bufferGeometry ref={geometryRef}>
+						<bufferAttribute
+							attach="attributes-position"
+							args={[positionsArray, 3]}
+							usage={DynamicDrawUsage}
+						/>
+						<bufferAttribute
+							attach="attributes-velocity"
+							args={[velocitiesArray, 3]}
+							usage={DynamicDrawUsage}
+						/>
+						<bufferAttribute
+							attach="attributes-age"
+							args={[agesArray, 1]}
+							usage={DynamicDrawUsage}
+						/>
+						<bufferAttribute
+							attach="attributes-life"
+							args={[livesArray, 1]}
+							usage={DynamicDrawUsage}
+						/>
+						<bufferAttribute
+							attach="attributes-psize"
+							args={[sizesArray, 1]}
+							usage={DynamicDrawUsage}
+						/>
+						<bufferAttribute
+							attach="attributes-pcolor"
+							args={[colorsArray, 3]}
+							usage={DynamicDrawUsage}
+						/>
+					</bufferGeometry>
+					<shaderMaterial
+						ref={materialRef}
+						vertexShader={vertexShader}
+						fragmentShader={fragmentShader}
+						transparent
+						depthWrite={false}
+						blending={AdditiveBlending}
+						vertexColors
+						uniforms={{
+							sizeAttenuation: { value: 0.85 },
+							pixelRatio: {
+								value:
+									typeof window !== "undefined"
+										? window.devicePixelRatio
+										: 1,
+							},
+						}}
+					/>
+				</points>
+			</>
 		);
 	}
 );

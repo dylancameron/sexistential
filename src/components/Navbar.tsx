@@ -8,11 +8,12 @@ interface NavbarProps {
 	actionHref?: string; // used if not a button
 	asButton?: boolean; // render action as a button
 	onActionClick?: () => void;
+	textColorOverride?: string;
 }
 
 const Navbar: React.FC<NavbarProps> = ({
 	brandText = "sexistential.xyz",
-	brandHref = "/",
+	brandHref = "/sexistential",
 	actionText = "sign up",
 	actionHref = "",
 	asButton = true,
@@ -25,7 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({
 			{/* Brand */}
 			<a
 				href={brandHref}
-				className="sm:text-4xl md:text-5xl text-2xl"
+				className="sm:text-4xl md:text-6xl text-2xl"
 				style={{ color: textColor }}
 			>
 				{brandText}
@@ -37,7 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({
 				<button
 					type="button"
 					onClick={onActionClick}
-					className="sm:text-4xl md:text-5xl text-2xl"
+					className="sm:text-4xl md:text-6xl text-2xl"
 					style={{ color: textColor }}
 				>
 					{actionText}
@@ -46,7 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({
 			) : (
 				<a
 					href={actionHref}
-					className="sm:text-4xl md:text-5xl text-2xl"
+					className="sm:text-4xl md:text-6xl text-2xl"
 					style={{ color: textColor }}
 				>
 					{actionText}
