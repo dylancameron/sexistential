@@ -45,7 +45,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogTrigger asChild>{title}</DialogTrigger>
 				<DialogContent
-					className={`sm:max-w-[425px] md:max-w-2xl`}
+					className={`sm:max-w-106.25 md:max-w-2xl`}
 					style={{
 						background: bgColor,
 						color: finalTextColor,
