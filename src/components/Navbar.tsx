@@ -1,5 +1,6 @@
 import React from "react";
 import { useColorContext } from "@/hooks/useColorContext";
+import Link from "next/link";
 
 interface NavbarProps {
 	brandText?: string;
@@ -24,14 +25,14 @@ const Navbar: React.FC<NavbarProps> = ({
 	return (
 		<header className="absolute top-0 p-6 sm:pr-9 md:pr-12 w-full flex justify-between items-center z-50">
 			{/* Brand */}
-			<a
+			<Link
 				href={brandHref}
 				className="sm:text-4xl md:text-6xl text-2xl"
 				style={{ color: textColor }}
 			>
 				{brandText}
 				<span className="sr-only">{brandText}</span>
-			</a>
+			</Link>
 
 			{/* Action */}
 			{asButton ? (
