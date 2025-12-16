@@ -1,10 +1,9 @@
-import { useScalingText } from "@/hooks/useScalingText";
-import type { Ref } from "react";
 import type React from "react";
+import { useScalingText } from "@/hooks/useScalingText";
 import {
 	AutosizeTextarea,
 	type AutosizeTextAreaRef,
-} from "./ui/auto-resize-textarea";
+} from "@/components/ui/auto-resize-textarea";
 
 export interface VennSectionBox {
 	top: number;
@@ -80,7 +79,7 @@ export function VennSection({
 				}}
 			>
 				<AutosizeTextarea
-					ref={ref as Ref<AutosizeTextAreaRef>}
+					ref={ref as React.Ref<AutosizeTextAreaRef>}
 					value={value}
 					onChange={(e) => {
 						setSectionsText((prev) => {

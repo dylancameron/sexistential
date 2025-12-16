@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import VenDiagram from "@/components/VennDiagram";
 import VenDiagramButtonWrapper from "@/components/VennDiagramButtons";

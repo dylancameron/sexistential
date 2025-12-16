@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import {
@@ -35,10 +37,10 @@ interface SparklerProps {
 const SparklerSystem: React.FC<SparklerProps> = ({
 	particleCount = 150,
 	emissionRate = 5,
-	origin = [1, -1, 0],
-	trailLength = 50,
-	slowMo = 0.75,
-	scale = 1,
+	origin = [1.5, -1, 0],
+	trailLength = 100,
+	slowMo = 0.85,
+	scale = 1.5,
 	autoScale = true,
 }) => {
 	const particlesRef = useRef<ParticleData[]>([]);
@@ -130,7 +132,7 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 					vAlpha = alpha;
 					vColor = color;
 					vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-					gl_PointSize = size * (200.0 / -mvPosition.z);
+					gl_PointSize = size * (100.0 / -mvPosition.z);
 					gl_Position = projectionMatrix * mvPosition;
 				}
 			`,
@@ -143,7 +145,7 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 
 					if (dist > 0.35) discard;
 
-					float alpha = vAlpha * (1.0 - smoothstep(0.0, 0.35, dist));
+					float alpha = vAlpha * (1.0 - smoothstep(0.0, 0.3, dist));
 					
 					float brightness = 1.0 - smoothstep(0.0, 0.15, dist);
 					vec3 color = vColor + vec3(brightness * 0.8);

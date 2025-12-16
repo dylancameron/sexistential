@@ -11,6 +11,6 @@ const uploadToVercelBlob = async (imageBlob: Blob) => {
 	if (!response.ok) throw new Error("Upload failed");
 
 	return data.url;
-}
+};
 
 export default uploadToVercelBlob;

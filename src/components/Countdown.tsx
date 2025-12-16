@@ -1,3 +1,5 @@
+"use client";
+
 import { useColorContext } from "@/hooks/useColorContext";
 import { useState, useEffect, useRef } from "react";
 import { SlidingNumber } from "./ui/sliding-number-roller";

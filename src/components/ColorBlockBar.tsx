@@ -1,3 +1,5 @@
+"use client";
+
 import { useColorContext } from "@/hooks/useColorContext";
 import { useDeviceDetection } from "@/hooks/useDeviceDetection";
 import React, { useState } from "react";

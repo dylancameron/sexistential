@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect, type RefObject } from "react";
 
 export function useContainerDimensions(

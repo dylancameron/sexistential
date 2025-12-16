@@ -1,7 +1,7 @@
 @font-face {
 	font-family: "Control Upright";
-	src: url("../../fonts/ControlUpright-RegularTNT.woff2") format("woff2"),
-		url("../../fonts/ControlUpright-RegularTNT.woff") format("woff");
+	src: url("./fonts/ControlUpright-RegularTNT.woff2") format("woff2"),
+		url("./fonts/ControlUpright-RegularTNT.woff") format("woff");
 	font-weight: normal;
 	font-style: normal;
 	font-display: swap;

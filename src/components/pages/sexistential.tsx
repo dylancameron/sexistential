@@ -1,5 +1,6 @@
-import { Canvas } from "@react-three/fiber";
+"use client";
 
+import { Canvas } from "@react-three/fiber";
 import CountdownComponent from "@/components/Countdown";
 import Background from "@/components/Background";
 import { SparklerSystem } from "@/components/scene/SparklerSystem";

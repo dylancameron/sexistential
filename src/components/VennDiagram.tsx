@@ -1,7 +1,12 @@
+"use client";
+
 import { useColorContext } from "@/hooks/useColorContext";
-import { useEffect, useState } from "react";
-import { VennSection } from "./VennSection";
+import { useEffect, useRef, useState } from "react";
+import { VennSection } from "@/components/VennSection";
 import { useDeviceDetection } from "@/hooks/useDeviceDetection";
+// import { captureVennDiagram, handleSocialShare } from "@/lib/shareHelpers";
+import { generateRandomVenn, getVennBounds } from "@/lib/vennHelpers";
+import ShareButtonGroup from "./ShareButtonGroup";
 
 interface VenDiagramProps {
 	count: 2 | 3;
@@ -16,69 +21,6 @@ interface Section {
 	height: number;
 }
 
-const OUTER_WORDS = [
-	"therapists",
-	"ovaries",
-	"high heels",
-	"dopamine",
-	"reality",
-];
-
-const INNER_WORDS = ["naked", "devotion", "beliefs", "feelings", "f*ck"];
-
-const CENTER_WORDS = ["robyn"];
-
-function generateRandomVenn(count: 2 | 3) {
-	if (count === 2) {
-		// Structure: [left-only, overlap, right-only]
-		return [
-			getRandom(OUTER_WORDS),
-			getRandom(CENTER_WORDS),
-			getRandom(OUTER_WORDS),
-		];
-	}
-
-	// 3 circle venn has 7 sections in a fixed layout
-	// 0: Top only (outer)
-	// 1: Bottom-left only (outer)
-	// 2: Bottom-right only (outer)
-	// 3: Top ∩ Bottom-left (inner)
-	// 4: Top ∩ Bottom-right (inner)
-	// 5: Bottom-left ∩ Bottom-right (inner)
-	// 6: Center (center)
-
-	return [
-		getRandom(OUTER_WORDS),
-		getRandom(OUTER_WORDS),
-		getRandom(OUTER_WORDS),
-		getRandom(INNER_WORDS),
-		getRandom(INNER_WORDS),
-		getRandom(INNER_WORDS),
-		getRandom(CENTER_WORDS),
-	];
-}
-
-function getRandom(list: string[]) {
-	if (!list.length) return "";
-	return list[Math.floor(Math.random() * list.length)];
-}
-
-function getVennBounds(size: number, count: 2 | 3) {
-	const overlap = size / 3;
-
-	if (count === 2) {
-		return {
-			width: size + (overlap / 1.25) * 2,
-			height: size,
-		};
-	}
-
-	return {
-		width: size + overlap * 2,
-		height: size + overlap * 1.25,
-	};
-}
-
 export default function VennDiagram({
 	count,
 	isActive = true,
@@ -87,6 +29,9 @@ export default function VennDiagram({
 	const { textColor } = useColorContext();
 	const { width, height } = getVennBounds(size, count);
 	const isMobile = useDeviceDetection();
+
+	const vennRef = useRef<HTMLDivElement>(null);
+	const [, setCopyPopoverOpen] = useState(false);
 
 	const borderWidth = isActive ? 6 : 3;
 
@@ -208,9 +153,39 @@ export default function VennDiagram({
 
 	const sections = getSections();
 
+	// const handleFacebookShare = async () => {
+	// 	if (!vennRef.current) return;
+	// 	const blob = await captureVennDiagram(vennRef.current);
+	// 	if (!blob) return;
+	// 	const url = URL.createObjectURL(blob);
+
+	// 	handleSocialShare("facebook", setLoading, url, setCopyPopoverOpen);
+	// }
+
+	// const handleInstagramShare = async () => {
+	// 	if (!vennRef.current) return;
+	// 	const blob = await captureVennDiagram(vennRef.current);
+	// 	if (!blob) return;
+	// 	const url = URL.createObjectURL(blob)
+
+	// 	handleSocialShare("instagram", setLoading, url, setCopyPopoverOpen);
+	// }
+
+	// const handleCopyShare = async () => {
+	// 	if (!vennRef.current) return;
+	// 	const blob = await captureVennDiagram(vennRef.current);
+	// 	if (!blob) return;
+	// 	const url = URL.createObjectURL(blob);
+
+	// 	handleSocialShare("copy", setLoading, url, setCopyPopoverOpen);
+	// }
+
 	return (
 		<>
-			<div className="w-full h-full flex items-center justify-center overflow-hidden">
+			<div
+				ref={vennRef}
+				className="w-full h-full flex items-center justify-center overflow-hidden"
+			>
 				{/* SCALE WRAPPER */}
 				<div
 					style={{
@@ -308,7 +283,11 @@ export default function VennDiagram({
 				</div>
 			</div>
 			<div className="flex flex-col items-end gap-0 md:gap-2 absolute bottom-0 right-0 md:pr-12 pr-6 pb-12">
-				<button
+				<ShareButtonGroup
+					vennRef={vennRef}
+					setCopyPopoverOpen={setCopyPopoverOpen}
+				/>
+				{/* <button
 					type="button"
 					// onClick={share}
 					style={{
@@ -317,7 +296,7 @@ export default function VennDiagram({
 					className={`md:text-6xl sm:text-4xl text-2xl tracking-wide`}
 				>
 					share
-				</button>
+				</button> */}
 				<button
 					type="button"
 					onClick={randomize}
