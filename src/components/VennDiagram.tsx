@@ -179,20 +179,20 @@ export default function VennDiagram({
 				}, // Bottom-right only
 				{
 					top: half * 1.125,
-					left: topCircleLeft + quarter * 0.5,
-					width: quarter,
+					left: topCircleLeft + quarter * 0.25,
+					width: quarter * 1.5,
 					height: quarter,
 				}, // Top ∩ Bottom-left
 				{
 					top: half * 1.125,
-					left: topCircleLeft + half * 1.25,
-					width: quarter,
+					left: topCircleLeft + half * 1.125,
+					width: quarter * 1.5,
 					height: quarter,
 				}, // Top ∩ Bottom-right
 				{
 					top: half * 2,
-					left: topCircleLeft + quarter * 1.5,
-					width: quarter,
+					left: topCircleLeft + quarter * 1.25,
+					width: quarter * 1.5,
 					height: quarter,
 				},
 				// Bottom-left ∩ Bottom-right
@@ -302,7 +302,7 @@ export default function VennDiagram({
 							focusedIndex={focusedIndex}
 							setFocusedIndex={setFocusedIndex}
 							setSectionsText={setSectionsText}
-							baseFont={78}
+							baseFont={72}
 						/>
 					))}
 				</div>
@@ -310,11 +310,11 @@ export default function VennDiagram({
 			<div className="flex flex-col items-end gap-0 md:gap-2 absolute bottom-0 right-0 md:pr-12 pr-6 pb-12">
 				<button
 					type="button"
-					onClick={randomize}
+					// onClick={share}
 					style={{
 						color: textColor,
 					}}
-					className={`md:text-5xl sm:text-4xl text-2xl tracking-wide`}
+					className={`md:text-6xl sm:text-4xl text-2xl tracking-wide`}
 				>
 					share
 				</button>
@@ -324,7 +324,7 @@ export default function VennDiagram({
 					style={{
 						color: textColor,
 					}}
-					className={`md:text-5xl sm:text-4xl text-2xl tracking-wide`}
+					className={`md:text-6xl sm:text-4xl text-2xl tracking-wide`}
 				>
 					randomize
 				</button>
