@@ -6,7 +6,7 @@ const OUTER_WORDS = [
 	"reality",
 ];
 
-const INNER_WORDS = ["naked", "devotion", "beliefs", "feelings", "f*ck"];
+const INNER_WORDS = ["example", "devotion", "beliefs", "feelings", "f*ck"];
 
 const CENTER_WORDS = ["robyn"];
 

@@ -18,7 +18,14 @@ function Sexistential() {
 	return (
 		<>
 			<Background className="h-dvh w-full max-w-full">
-				<Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
+				<Canvas
+					camera={{ position: [0, 0, 6], fov: 50 }}
+					gl={{
+						antialias: true,
+						alpha: true,
+						powerPreference: "high-performance",
+					}}
+				>
 					<ambientLight intensity={0.1} />
 					<SparklerSystem particleCount={150} emissionRate={20} />
 				</Canvas>

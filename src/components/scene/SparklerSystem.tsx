@@ -44,7 +44,7 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 	particleCount = 150,
 	emissionRate = 5,
 	origin = [1.5, -1, 0],
-	trailLength = 100,
+	trailLength = 80,
 	slowMo = 0.85,
 	scale = 1.5,
 	autoScale = true,
@@ -190,6 +190,7 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 		return new ShaderMaterial({
 			uniforms: {},
 			vertexShader: `
+				precision highp float;
 				attribute float size;
 				attribute float alpha;
 				attribute vec3 color;
@@ -199,11 +200,13 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 					vAlpha = alpha;
 					vColor = color;
 					vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+
 					gl_PointSize = size * (100.0 / -mvPosition.z);
 					gl_Position = projectionMatrix * mvPosition;
 				}
 			`,
 			fragmentShader: `
+				precision highp float;
 				varying float vAlpha;
 				varying vec3 vColor;
 				void main() {
@@ -227,7 +230,8 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 	}, []);
 
 	useFrame((_state, delta) => {
-		delta *= slowMo;
+		// Clamp delta to prevent huge jumps
+		delta = Math.min(delta, 0.1) * slowMo;
 
 		const positions = geometry.attributes.position.array as Float32Array;
 		const sizes = geometry.attributes.size.array as Float32Array;

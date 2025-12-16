@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import React, { useState } from "react";
 import { captureVennDiagram, handleSocialShare } from "@/lib/shareHelpers";
 import { toast } from "sonner";
+import { useColorContext } from "@/hooks/useColorContext";
 
 export default function ShareButtonGroup({
 	vennRef,
@@ -14,6 +15,7 @@ export default function ShareButtonGroup({
 	setLoading?: (loading: boolean) => void;
 	setCopyPopoverOpen?: (open: boolean) => void;
 }) {
+	const { textColor } = useColorContext();
 	const [open, setOpen] = useState(false);
 
 	const handleClick = async (platform: "facebook" | "instagram" | "copy") => {
@@ -54,6 +56,9 @@ export default function ShareButtonGroup({
 							onTap={() => handleClick("facebook")}
 							whileHover={{ scale: 1.1 }}
 							className="text-lg"
+							style={{
+								color: textColor,
+							}}
 						>
 							facebook
 						</motion.button>
@@ -61,6 +66,9 @@ export default function ShareButtonGroup({
 							onTap={() => handleClick("instagram")}
 							whileHover={{ scale: 1.1 }}
 							className="text-lg"
+							style={{
+								color: textColor,
+							}}
 						>
 							instagram
 						</motion.button>
@@ -68,6 +76,9 @@ export default function ShareButtonGroup({
 							onTap={() => handleClick("copy")}
 							whileHover={{ scale: 1.1 }}
 							className="text-lg"
+							style={{
+								color: textColor,
+							}}
 						>
 							copy
 						</motion.button>
