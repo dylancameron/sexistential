@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useRef, useMemo, useEffect, useState } from "react";
+import React, {
+	useRef,
+	useMemo,
+	useEffect,
+	useState,
+	useCallback,
+} from "react";
 import { useFrame } from "@react-three/fiber";
 import {
 	AdditiveBlending,
@@ -48,42 +54,103 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 	const nextId = useRef(0);
 	const spawnTimer = useRef(0);
 	const [deviceScale, setDeviceScale] = useState(1);
+	const [adjustedOrigin, setAdjustedOrigin] =
+		useState<[number, number, number]>(origin);
 
-	// Detect device and set scale
-	useEffect(() => {
-		if (!autoScale) return;
+	// Memoize the update function to prevent unnecessary re-renders
+	const updateScaleAndOrigin = useCallback(() => {
+		if (!autoScale) {
+			setDeviceScale(1);
+			setAdjustedOrigin(origin);
+			return;
+		}
 
-		const updateScale = () => {
-			const width = window.innerWidth;
-			const height = window.innerHeight;
-			const isMobile = width < 768;
-			const isTablet = width >= 768 && width < 1024;
+		const width = window.innerWidth;
+		const height = window.innerHeight;
+		const isMobile = width < 768;
+		const isTablet = width >= 768 && width < 1024;
+		const aspectRatio = width / height;
 
-			// Calculate scale based on screen size
-			let calculatedScale = 1;
+		// Calculate scale based on screen size
+		let calculatedScale = 1;
 
-			if (isMobile) {
-				// Mobile: scale based on screen width
-				calculatedScale = Math.min(width / 375, 1); // 375px is base mobile width
-				calculatedScale *= 0.6; // Make it smaller on mobile
-			} else if (isTablet) {
-				calculatedScale = 0.8;
-			}
+		if (isMobile) {
+			// Mobile: scale based on screen width
+			calculatedScale = Math.min(width / 375, 1); // 375px is base mobile width
+			calculatedScale *= 0.6; // Make it smaller on mobile
+		} else if (isTablet) {
+			calculatedScale = 0.8;
+		}
 
-			// Also consider aspect ratio
-			const aspectRatio = width / height;
+		// Also consider aspect ratio
+		if (aspectRatio < 0.75) {
+			// Very tall/narrow screens (portrait phones)
+			calculatedScale *= 1.1;
+		}
+
+		// Adjust origin position for mobile/tablet screens
+		let newOrigin: [number, number, number] = [...origin];
+
+		if (isMobile) {
+			// Adjust X position to stay within viewport
+			// Use percentage of screen width instead of fixed values
+			const maxX = width < 400 ? 0.8 : 1.2; // Smaller max X for very small screens
+			const newX = Math.min(origin[0], maxX);
+
+			// Adjust Y position to be higher on mobile to avoid bottom of screen
+			const newY = Math.max(origin[1], -0.5); // Raise the minimum Y position
+
+			// For portrait phones, adjust further
 			if (aspectRatio < 0.75) {
-				// Very tall/narrow screens (portrait phones)
-				calculatedScale *= 0.8;
+				const portraitX = newX * 0.8; // Move more to center for narrow screens
+				const portraitY = Math.max(newY, -0.4); // Raise even higher
+				newOrigin = [portraitX, portraitY, origin[2]];
+			} else {
+				newOrigin = [newX, newY, origin[2]];
 			}
+		} else if (isTablet) {
+			// Adjust for tablet screens
+			const tabletX = origin[0] * 0.9;
+			const tabletY = Math.max(origin[1], -0.8);
+			newOrigin = [tabletX, tabletY, origin[2]];
+		}
 
-			setDeviceScale(calculatedScale);
+		// Only update state if values actually changed
+		setDeviceScale((prevScale) => {
+			if (Math.abs(prevScale - calculatedScale) < 0.01) return prevScale;
+			return calculatedScale;
+		});
+
+		setAdjustedOrigin((prevOrigin) => {
+			if (
+				Math.abs(prevOrigin[0] - newOrigin[0]) < 0.01 &&
+				Math.abs(prevOrigin[1] - newOrigin[1]) < 0.01 &&
+				Math.abs(prevOrigin[2] - newOrigin[2]) < 0.01
+			) {
+				return prevOrigin;
+			}
+			return newOrigin;
+		});
+	}, [autoScale, origin]);
+
+	// Detect device and adjust origin position - only on mount and resize
+	useEffect(() => {
+		// Initial calculation
+		updateScaleAndOrigin();
+
+		// Debounced resize handler to prevent excessive updates
+		let resizeTimeout: NodeJS.Timeout;
+		const handleResize = () => {
+			clearTimeout(resizeTimeout);
+			resizeTimeout = setTimeout(updateScaleAndOrigin, 150);
 		};
 
-		updateScale();
-		window.addEventListener("resize", updateScale);
-		return () => window.removeEventListener("resize", updateScale);
-	}, [autoScale]);
+		window.addEventListener("resize", handleResize);
+		return () => {
+			window.removeEventListener("resize", handleResize);
+			clearTimeout(resizeTimeout);
+		};
+	}, [updateScaleAndOrigin]); // Only depend on the memoized callback
 
 	const effectiveScale = autoScale ? deviceScale * scale : scale;
 
@@ -176,7 +243,7 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 				if (particlesRef.current.length < particleCount) {
 					const theta = Math.random() * Math.PI * 2;
 					const phi = Math.random() * Math.PI * 0.8 + Math.PI * 0.3;
-					const speed = (Math.random() * 2 + 0.5) * effectiveScale;
+					const speed = (Math.random() * 2 + 0.75) * effectiveScale;
 					const velocity = new Vector3(
 						Math.sin(phi) * Math.cos(theta) * speed,
 						Math.cos(phi) * speed +
@@ -188,14 +255,16 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 					);
 					particlesRef.current.push({
 						id: nextId.current++,
-						position: new Vector3(...origin),
+						position: new Vector3(...adjustedOrigin), // Use adjusted origin
 						velocity,
 						life: 0,
 						maxLife: Math.random() * 0.4 + 0.3,
 						size: (Math.random() * 3 + 4) * effectiveScale,
 						color: colors[colorIndex].clone(),
 						isStar: Math.random() > 0.5,
-						trail: Array(trailLength).fill(new Vector3(...origin)),
+						trail: Array(trailLength).fill(
+							new Vector3(...adjustedOrigin)
+						),
 					});
 				}
 			}

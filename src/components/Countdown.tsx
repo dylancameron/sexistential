@@ -59,13 +59,13 @@ export default function CountdownComponent({
 
 	return (
 		<div
-			className="flex flex-col items-center justify-center h-screen md:gap-6 sm:gap-4 gap-2 absolute inset-0 z-0"
+			className="flex flex-col items-center justify-center h-screen md:gap-6 fixed inset-0 z-0"
 			style={{
 				background: backgroundColor,
 			}}
 		>
-			<div className="flex gap-2 flex-row">
-				<div className="px-6 py-4">
+			<div className="flex gap-4 sm:gap-1 md:gap-2 lg:gap-3 flex-row items-center">
+				<div className="sm:px-4 px-2 md:px-6 py-4 flex flex-col items-center md:gap-1">
 					<SlidingNumber
 						number={timeLeft.days}
 						padStart
@@ -74,7 +74,6 @@ export default function CountdownComponent({
 							color: color,
 							textShadow: textShadowEffect,
 						}}
-						inView
 					/>
 					<div
 						className="text-sm"
@@ -83,10 +82,10 @@ export default function CountdownComponent({
 							textShadow: textShadowEffect,
 						}}
 					>
-						Days
+						days
 					</div>
 				</div>
-				<div className="px-6 py-4">
+				<div className="sm:px-4 px-2 md:px-6 py-4 flex flex-col items-center md:gap-1">
 					<SlidingNumber
 						number={timeLeft.hours}
 						padStart
@@ -103,10 +102,10 @@ export default function CountdownComponent({
 							textShadow: textShadowEffect,
 						}}
 					>
-						Hours
+						hours
 					</div>
 				</div>
-				<div className="px-6 py-4">
+				<div className="sm:px-4 px-2 md:px-6 py-4 flex flex-col items-center md:gap-1">
 					<SlidingNumber
 						number={timeLeft.minutes}
 						padStart
@@ -123,10 +122,10 @@ export default function CountdownComponent({
 							textShadow: textShadowEffect,
 						}}
 					>
-						Minutes
+						minutes
 					</div>
 				</div>
-				<div className="px-6 py-4">
+				<div className="sm:px-4 px-2 md:px-6 py-4 flex flex-col items-center md:gap-1">
 					<SlidingNumber
 						number={timeLeft.seconds}
 						padStart
@@ -143,7 +142,7 @@ export default function CountdownComponent({
 							textShadow: textShadowEffect,
 						}}
 					>
-						Seconds
+						seconds
 					</div>
 				</div>
 			</div>

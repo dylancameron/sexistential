@@ -55,21 +55,21 @@ export default function ShareButtonGroup({
 							whileHover={{ scale: 1.1 }}
 							className="text-lg"
 						>
-							Facebook
+							facebook
 						</motion.button>
 						<motion.button
 							onTap={() => handleClick("instagram")}
 							whileHover={{ scale: 1.1 }}
 							className="text-lg"
 						>
-							Instagram
+							instagram
 						</motion.button>
 						<motion.button
 							onTap={() => handleClick("copy")}
 							whileHover={{ scale: 1.1 }}
 							className="text-lg"
 						>
-							Copy
+							copy
 						</motion.button>
 					</motion.div>
 				)}

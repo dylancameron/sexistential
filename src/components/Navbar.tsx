@@ -23,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({
 	const { textColor } = useColorContext();
 
 	return (
-		<header className="absolute top-0 p-6 sm:pr-9 md:pr-12 w-full flex justify-between items-center z-50">
+		<header className="fixed top-0 p-6 sm:pr-9 md:pr-12 w-full flex justify-between items-center z-50">
 			{/* Brand */}
 			<Link
 				href={brandHref}

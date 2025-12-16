@@ -17,13 +17,10 @@ function Sexistential() {
 
 	return (
 		<>
-			<Background className="h-dvh">
-				<Canvas
-					className="bg-transparent absolute inset-0 z-10"
-					camera={{ position: [0, 0, 6], fov: 50 }}
-				>
+			<Background className="h-dvh w-full max-w-full">
+				<Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
 					<ambientLight intensity={0.1} />
-					<SparklerSystem particleCount={500} emissionRate={10} />
+					<SparklerSystem particleCount={150} emissionRate={20} />
 				</Canvas>
 				<CountdownComponent
 					targetDate={new Date("2026-01-07T00:00:00")}

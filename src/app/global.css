@@ -126,7 +126,9 @@
 body {
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
+	overflow: hidden !important;
+	width: 100%;
+	max-width: 100vw;
 	font-family: "Control Upright";
 }
 
