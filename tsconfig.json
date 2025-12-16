@@ -38,17 +38,14 @@
     }
   },
   "include": [
-    "src",
-    "./dist/types/**/*.ts",
-    "./next-env.d.ts",
-    "dist/types/**/*.ts",
-    "dist/dev/types/**/*.ts",
-    "global.d.ts",
+    "next-env.d.ts",
+    "**/*.tsx",
+    "**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "./node_modules",
+    "node_modules",
     "robots.txt"
   ]
 }
