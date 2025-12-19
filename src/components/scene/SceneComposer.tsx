@@ -21,7 +21,7 @@ export function SceneComposer() {
 					luminanceSmoothing={0.3}
 					height={600}
 				/>
-				<Noise opacity={0.5} />
+				<Noise opacity={0.25} />
 				<Vignette eskil={false} offset={0.1} darkness={1.1} />
 			</EffectComposer>
 		</>

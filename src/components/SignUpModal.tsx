@@ -22,6 +22,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon, XIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useExternalScripts } from "@/hooks/useExternalScripts";
 
 interface SignUpModalProps {
 	children?: React.ReactNode;
@@ -67,7 +68,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 							{description}
 						</DialogDescription>
 					</DialogHeader>
-					<SignUpForm />
+					<LayloForm />
+					{/* <SignUpForm /> */}
 				</DialogContent>
 			</Dialog>
 		);
@@ -110,7 +112,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 						{description}
 					</DrawerDescription>
 				</DrawerHeader>
-				<SignUpForm />
+				<LayloForm />
+				{/* <SignUpForm /> */}
 			</DrawerContent>
 		</Drawer>
 	);
@@ -118,10 +121,29 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 
 export default SignUpModal;
 
+const LayloForm = () => {
+	useExternalScripts({
+		url: "https://embed.laylo.com/laylo-sdk.js",
+	});
+	return (
+		<>
+			<iframe
+				title="Laylo Form"
+				id="laylo-drop-5riqK"
+				allow="web-share"
+				style={{ width: "1px", minWidth: "100%", maxWidth: "1000px" }}
+				src="https://embed.laylo.com?dropId=5riqK&color=ffffff&minimal=false&theme=light"
+			>
+				{" "}
+			</iframe>
+		</>
+	);
+};
+
 const formKey = "";
 const formEndPoint = "";
 
-function SignUpForm() {
+export function SignUpForm() {
 	const finalTextColor = "#000";
 	const bgColor = "#fff";
 

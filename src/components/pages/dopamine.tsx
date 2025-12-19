@@ -4,12 +4,13 @@ import { useState } from "react";
 import VenDiagram from "@/components/VennDiagram";
 import VenDiagramButtonWrapper from "@/components/VennDiagramButtons";
 import ColorBlockBar from "@/components/ColorBlockBar";
+import PasswordProtect from "@/components/PasswordProtect";
 
 function Dopamine() {
 	const [activeVenn, setActiveVenn] = useState<2 | 3>(2);
 
 	return (
-		<>
+		<PasswordProtect>
 			<div className="h-dvh">
 				<ColorBlockBar />
 				{activeVenn && (
@@ -22,7 +23,7 @@ function Dopamine() {
 					setActiveVenn={setActiveVenn}
 				/>
 			</div>
-		</>
+		</PasswordProtect>
 	);
 }
 

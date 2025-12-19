@@ -1,11 +1,11 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import CountdownComponent from "@/components/Countdown";
 import Background from "@/components/Background";
 import { SparklerSystem } from "@/components/scene/SparklerSystem";
 import { useColorContext } from "@/hooks/useColorContext";
 import { useEffect } from "react";
+import { SceneComposer } from "../scene/SceneComposer";
 
 function Sexistential() {
 	const { setOverrideTextColor } = useColorContext();
@@ -27,11 +27,13 @@ function Sexistential() {
 					}}
 				>
 					<ambientLight intensity={0.1} />
-					<SparklerSystem particleCount={150} emissionRate={20} />
+					<SparklerSystem
+						followCursor
+						particleCount={100}
+						emissionRate={20}
+					/>
+					<SceneComposer />
 				</Canvas>
-				<CountdownComponent
-					targetDate={new Date("2026-01-07T00:00:00")}
-				/>
 			</Background>
 		</>
 	);
