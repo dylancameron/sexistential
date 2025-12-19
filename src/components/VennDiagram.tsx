@@ -5,7 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import { VennSection } from "@/components/VennSection";
 import { useDeviceDetection } from "@/hooks/useDeviceDetection";
 // import { captureVennDiagram, handleSocialShare } from "@/lib/shareHelpers";
-import { generateRandomVenn, getVennBounds } from "@/lib/vennHelpers";
+import {
+	generateSmartVenn2,
+	generateSmartVenn3,
+	getVennBounds,
+} from "@/lib/vennHelpers";
 import ShareButtonGroup from "./ShareButtonGroup";
 
 interface VenDiagramProps {
@@ -47,7 +51,11 @@ export default function VennDiagram({
 	);
 
 	const randomize = () => {
-		setSectionsText(generateRandomVenn(count));
+		if (count === 2) {
+			setSectionsText(generateSmartVenn2());
+		} else {
+			setSectionsText(generateSmartVenn3());
+		}
 	};
 
 	// Scale diagram to fit viewport

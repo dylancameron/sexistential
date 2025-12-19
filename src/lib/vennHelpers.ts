@@ -6,6 +6,34 @@ const OUTER_WORDS = [
 	"reality",
 ];
 
+const PAIRS: Record<string, string[]> = {
+	Duvet: ["escape", "philosophy", "loving"],
+	"Cup of tea": ["philosophy", "zen"],
+	Escape: ["illusion", "forever", "sweet", "dopamine"],
+	"Go to bed": ["mess"],
+	Reality: ["illusion", "awkward", "zen"],
+	Mistake: ["audience", "high heels", "mystery", "zen"],
+	Tripping: ["awkward"],
+	"High heels": ["tripping", "dopamine"],
+	Chemistry: ["sun", "dopamine", "smash", "rubber coat"],
+	"Rubber coat": ["chemistry", "death drop", "spaceship", "flesh"],
+	Dopamine: ["high heels", "cup of tea", "escape", "death drop", "sucker"],
+	Philosophy: ["believer", "fool", "duvet", "cup of tea"],
+	Sweatpants: ["smash", "philosophy"],
+	Flesh: ["body", "rubber coat", "flash"],
+	Mess: ["loving", "death drop", "flowers", "go to bed"],
+	Sweet: ["escape", "awkward", "dumb"],
+	Sucker: ["believer", "dopamine"],
+	Civilised: ["devoted", "dumb"],
+	Zen: ["reality", "mistake", "cup of tea"],
+	Sun: ["flash", "sin", "prayers", "chemistry"],
+	Brave: ["dumb"],
+	Mystery: ["believer"],
+	Flowers: ["sin", "forever"],
+	Loving: ["prayers", "mess"],
+	Glitter: ["go to bed"],
+};
+
 const INNER_WORDS = ["example", "devotion", "beliefs", "feelings", "f*ck"];
 
 const CENTER_WORDS = ["robyn"];
@@ -59,4 +87,57 @@ export function generateRandomVenn(count: 2 | 3) {
 		getRandom(INNER_WORDS),
 		getRandom(CENTER_WORDS),
 	];
+}
+
+export function generateSmartVenn2() {
+	const keys = Object.keys(PAIRS);
+	const left = keys[Math.floor(Math.random() * keys.length)];
+	const overlapOptions = PAIRS[left];
+	const overlap =
+		overlapOptions[Math.floor(Math.random() * overlapOptions.length)];
+
+	// Pick right word not equal to left or overlap
+	let right: string;
+	do {
+		right = keys[Math.floor(Math.random() * keys.length)];
+	} while (right === left || right === overlap);
+
+	return [left, overlap, right];
+}
+
+export function generateSmartVenn3() {
+	const keys = Object.keys(PAIRS);
+	const outer: string[] = [];
+	// Pick 3 unique outer words
+	while (outer.length < 3) {
+		const candidate = keys[Math.floor(Math.random() * keys.length)];
+		if (!outer.includes(candidate)) outer.push(candidate);
+	}
+
+	// helper to find intersection between two words
+	const intersect = (a: string, b: string) => {
+		const aPairs = PAIRS[a] || [];
+		const bPairs = PAIRS[b] || [];
+		const common = aPairs.filter((x) => bPairs.includes(x));
+		return common.length
+			? getRandom(common)
+			: getRandom([...aPairs, ...bPairs]);
+	};
+
+	const topLeft = intersect(outer[0], outer[1]);
+	const topRight = intersect(outer[0], outer[2]);
+	const bottomRight = intersect(outer[1], outer[2]);
+	// Center: ideally a word in all three sets
+	const centerCandidates = (PAIRS[outer[0]] || []).filter(
+		(x) => PAIRS[outer[1]]?.includes(x) && PAIRS[outer[2]]?.includes(x)
+	);
+	const center = centerCandidates.length
+		? getRandom(centerCandidates)
+		: getRandom([
+				...PAIRS[outer[0]],
+				...PAIRS[outer[1]],
+				...PAIRS[outer[2]],
+		  ]);
+
+	return [...outer, topLeft, topRight, bottomRight, center];
 }

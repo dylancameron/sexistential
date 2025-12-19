@@ -12,7 +12,7 @@ const Layout: React.FC<Props> = ({ children }) => {
 	const [open, setOpen] = useState<boolean>(false);
 	return (
 		<>
-			<section className="h-full w-full">{children}</section>
+			<section className="h-dvh w-full">{children}</section>
 			<Navbar onActionClick={() => setOpen(true)} />
 			<SignUpModal open={open} setOpen={setOpen} />
 		</>

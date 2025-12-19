@@ -38,6 +38,9 @@ export default function ShareButtonGroup({
 		<div className="relative flex flex-col items-end gap-2">
 			<motion.button
 				onTap={() => setOpen(!open)}
+				style={{
+					color: textColor,
+				}}
 				className="md:text-6xl sm:text-4xl text-2xl tracking-wide"
 			>
 				share
