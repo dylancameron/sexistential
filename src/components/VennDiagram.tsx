@@ -44,7 +44,7 @@ export default function VennDiagram({
 
 	const numSections = count === 2 ? 3 : 7;
 
-	const default2Circle: string[] = ["sexi", "robyn", "stential"];
+	const default2Circle: string[] = ["", "sexistential", ""];
 
 	const [sectionsText, setSectionsText] = useState<string[]>(
 		count === 2 ? default2Circle : Array(numSections).fill("")

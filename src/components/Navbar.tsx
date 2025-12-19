@@ -14,7 +14,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({
 	brandText = "sexistential.xyz",
-	brandHref = "/sexistential",
+	brandHref = "/",
 	actionText = "sign up",
 	actionHref = "",
 	asButton = true,

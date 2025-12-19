@@ -6,6 +6,7 @@ import { SparklerSystem } from "@/components/scene/SparklerSystem";
 import { useColorContext } from "@/hooks/useColorContext";
 import { useEffect } from "react";
 import { SceneComposer } from "../scene/SceneComposer";
+import { KonichiwaRecordsLogo } from "../Branding";
 
 function Sexistential() {
 	const { setOverrideTextColor } = useColorContext();
@@ -35,6 +36,7 @@ function Sexistential() {
 					<SceneComposer />
 				</Canvas>
 			</Background>
+			<KonichiwaRecordsLogo className="absolute bottom-4 right-12" />
 		</>
 	);
 }
