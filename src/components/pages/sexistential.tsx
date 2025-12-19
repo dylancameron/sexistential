@@ -36,7 +36,7 @@ function Sexistential() {
 					<SceneComposer />
 				</Canvas>
 			</Background>
-			<KonichiwaRecordsLogo className="absolute bottom-4 right-12" />
+			<KonichiwaRecordsLogo className="absolute bottom-4 md:bottom-6 right-4 sm:right-6 md:right-12 max-w-18.75 sm:max-w-31.25 md:max-w-37.5" />
 		</>
 	);
 }
