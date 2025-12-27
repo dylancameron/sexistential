@@ -7,14 +7,20 @@ import { useColorContext } from "@/hooks/useColorContext";
 import { useEffect } from "react";
 import { SceneComposer } from "../scene/SceneComposer";
 import { KonichiwaRecordsLogo } from "../Branding";
+import Link from "next/link";
 
 function Sexistential() {
-	const { setOverrideTextColor } = useColorContext();
+	const { setOverrideTextColor, setOverrideBackgroundColor } =
+		useColorContext();
 
 	useEffect(() => {
 		setOverrideTextColor("#fff");
-		return () => setOverrideTextColor(undefined);
-	}, [setOverrideTextColor]);
+		setOverrideBackgroundColor("#000");
+		return () => {
+			setOverrideTextColor(undefined);
+			setOverrideBackgroundColor(undefined);
+		};
+	}, [setOverrideTextColor, setOverrideBackgroundColor]);
 
 	return (
 		<>
@@ -36,7 +42,13 @@ function Sexistential() {
 					<SceneComposer />
 				</Canvas>
 			</Background>
-			<KonichiwaRecordsLogo className="absolute bottom-4 md:bottom-6 right-4 sm:right-6 md:right-12 max-w-18.75 sm:max-w-31.25 md:max-w-37.5" />
+			<Link
+				href="https://robyn.com"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<KonichiwaRecordsLogo className="absolute bottom-1 md:bottom-6 right-0 sm:right-6 md:right-6 max-w-16 sm:max-w-20 md:max-w-24" />
+			</Link>
 		</>
 	);
 }

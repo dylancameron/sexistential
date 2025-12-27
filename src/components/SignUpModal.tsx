@@ -48,14 +48,22 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 			<Dialog open={open} onOpenChange={setOpen}>
 				<DialogTrigger asChild>{title}</DialogTrigger>
 				<DialogContent
-					className={`sm:max-w-106.25 md:max-w-2xl`}
+					className={`sm:max-w-xl md:max-w-xl`}
 					style={{
 						background: bgColor,
 						color: finalTextColor,
 						border: `2px solid ${finalTextColor}`,
 					}}
 				>
-					<DialogHeader className="text-left">
+					<DialogHeader
+						className="text-left gap-0"
+						style={{
+							color: finalTextColor,
+						}}
+					>
+						{/* <DrawerClose asChild className="absolute top-4 right-4">
+							<XIcon className="sm:size-8 md:size-10 lg:size-12" />
+						</DrawerClose> */}
 						<DialogTitle className="tracking-wide text-2xl sm:text-4xl md:text-5xl">
 							{title}
 						</DialogTitle>
@@ -69,7 +77,6 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 						</DialogDescription>
 					</DialogHeader>
 					<LayloForm />
-					{/* <SignUpForm /> */}
 				</DialogContent>
 			</Dialog>
 		);
@@ -84,7 +91,6 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 					color: finalTextColor,
 					border: `2px solid ${finalTextColor}`,
 				}}
-				className="px-0 py-0"
 			>
 				<DrawerHeader
 					className="text-left"
@@ -113,7 +119,6 @@ const SignUpModal: React.FC<SignUpModalProps> = ({
 					</DrawerDescription>
 				</DrawerHeader>
 				<LayloForm />
-				{/* <SignUpForm /> */}
 			</DrawerContent>
 		</Drawer>
 	);

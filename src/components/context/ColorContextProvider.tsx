@@ -10,6 +10,9 @@ export const ColorContextProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [overrideTextColor, setOverrideTextColor] = useState<
 		string | undefined
 	>();
+	const [overrideBackgroundColor, setOverrideBackgroundColor] = useState<
+		string | undefined
+	>();
 
 	const textColor =
 		overrideTextColor ?? (bgColor === "black" ? "#fff" : "#000");
@@ -30,6 +33,8 @@ export const ColorContextProvider: React.FC<{ children: React.ReactNode }> = ({
 				setColor,
 				overrideTextColor,
 				setOverrideTextColor,
+				overrideBackgroundColor,
+				setOverrideBackgroundColor,
 			}}
 		>
 			{children}

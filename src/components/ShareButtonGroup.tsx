@@ -35,25 +35,25 @@ export default function ShareButtonGroup({
 	};
 
 	return (
-		<div className="relative flex flex-col items-end gap-2">
+		<div className="relative flex flex-row-reverse items-end gap-2">
 			<motion.button
-				onTap={() => setOpen(!open)}
+				onClick={() => setOpen(!open)}
 				style={{
 					color: textColor,
 				}}
 				className="md:text-6xl sm:text-4xl text-2xl tracking-wide"
 			>
-				share
+				{open ? "✕" : "share"}
 			</motion.button>
 
-			<AnimatePresence>
-				{open && (
+			{open && (
+				<AnimatePresence initial={true}>
 					<motion.div
 						style={{ pointerEvents: "auto" }}
 						initial={{ opacity: 0, y: 10 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 10 }}
-						className="flex flex-col gap-2 mt-2"
+						className="flex flex-col gap-0 items-end"
 					>
 						<motion.button
 							onTap={() => handleClick("facebook")}
@@ -83,11 +83,11 @@ export default function ShareButtonGroup({
 								color: textColor,
 							}}
 						>
-							copy
+							copy link
 						</motion.button>
 					</motion.div>
-				)}
-			</AnimatePresence>
+				</AnimatePresence>
+			)}
 		</div>
 	);
 }

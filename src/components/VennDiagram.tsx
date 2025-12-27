@@ -50,7 +50,7 @@ export default function VennDiagram({
 		count === 2 ? default2Circle : Array(numSections).fill("")
 	);
 
-	const randomize = () => {
+	const randomise = () => {
 		if (count === 2) {
 			setSectionsText(generateSmartVenn2());
 		} else {
@@ -197,7 +197,7 @@ export default function VennDiagram({
 				{/* SCALE WRAPPER */}
 				<div
 					style={{
-						transform: `scale(${scale * 0.875})`,
+						transform: `scale(${scale * 0.825})`,
 						transformOrigin: "center",
 						position: "relative",
 						zIndex: 999,
@@ -285,12 +285,12 @@ export default function VennDiagram({
 							focusedIndex={focusedIndex}
 							setFocusedIndex={setFocusedIndex}
 							setSectionsText={setSectionsText}
-							baseFont={72}
+							baseFont={48}
 						/>
 					))}
 				</div>
 			</div>
-			<div className="flex flex-col items-end gap-0 md:gap-2 absolute bottom-0 right-0 md:pr-12 pr-6 pb-12">
+			<div className="flex flex-col items-end gap-0 md:gap-2 absolute bottom-0 right-0 md:pr-12 pr-6 pb-12 z-999">
 				<ShareButtonGroup
 					vennRef={vennRef}
 					setCopyPopoverOpen={setCopyPopoverOpen}
@@ -307,13 +307,13 @@ export default function VennDiagram({
 				</button> */}
 				<button
 					type="button"
-					onClick={randomize}
+					onClick={randomise}
 					style={{
 						color: textColor,
 					}}
 					className={`md:text-6xl sm:text-4xl text-2xl tracking-wide`}
 				>
-					randomize
+					randomise
 				</button>
 			</div>
 		</>

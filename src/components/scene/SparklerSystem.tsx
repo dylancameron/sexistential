@@ -141,16 +141,16 @@ const SparklerSystem: React.FC<SparklerProps> = ({
 		if (isMobile) {
 			// Adjust X position to stay within viewport
 			// Use percentage of screen width instead of fixed values
-			const maxX = width < 400 ? 0.8 : 1.2; // Smaller max X for very small screens
+			const maxX = width < 400 ? 0.9 : 1.2; // Smaller max X for very small screens
 			const newX = Math.min(origin[0], maxX + (width - 375) / 1000);
 
 			// Adjust Y position to be higher on mobile to avoid bottom of screen
-			const newY = Math.max(origin[1], -0.5); // Raise the minimum Y position
+			const newY = Math.max(origin[1], -2); // Raise the minimum Y position
 
 			// For portrait phones, adjust further
 			if (aspectRatio < 0.75) {
 				const portraitX = newX * 0.8; // Move more to center for narrow screens
-				const portraitY = Math.max(newY, -0.9); // Raise even higher
+				const portraitY = Math.max(newY, -2); // Raise even higher
 				newOrigin = [portraitX, portraitY, origin[2]];
 			} else {
 				newOrigin = [newX, newY, origin[2]];

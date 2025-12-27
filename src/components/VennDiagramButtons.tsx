@@ -99,7 +99,7 @@ const VennDiagramButtonWrapper: React.FC<WrapperProps> = ({
 	const { textColor } = useColorContext();
 
 	return (
-		<div className="absolute left-0 bottom-8 sm:bottom-0 flex flex-col items-center gap-12 md:gap-24 py-6 px-8 md:p-12">
+		<div className="absolute left-0 bottom-8 sm:bottom-0 flex flex-col items-center gap-16 sm:gap-24 md:gap-16 py-6 px-8 sm:px-12 sm:py-16">
 			<VennDiagramButtons
 				count={3}
 				isActive={activeVenn === 3}

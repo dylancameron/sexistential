@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 		type: "website",
 		title: siteConfig.title,
 		description: siteConfig.description,
-		url: "/",
+		url: "https://sexistential.xyz",
 		siteName: siteConfig.title,
 		images: [
 			{
@@ -34,18 +34,6 @@ export const metadata: Metadata = {
 	},
 	description: siteConfig.description,
 	keywords: siteConfig.keywords,
-	appleWebApp: {
-		capable: true,
-		statusBarStyle: "default",
-		title: siteConfig.title,
-	},
-	formatDetection: {
-		telephone: true,
-		email: true,
-	},
-	robots: {
-		index: true,
-	},
 };
 
 export const viewport: Viewport = {
